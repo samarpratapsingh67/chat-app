@@ -1,9 +1,12 @@
 "use client"
 import { UserButton } from '@clerk/nextjs';
 import React, { useState } from 'react';
+import { useUser } from '@clerk/nextjs';
 // Define the Navbar component
 
 const Navbar= () => {
+  // const user =useUser();
+  // console.log(user.user?.id);
   // State for Navbar mobile menu visibility
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   // State for AI Idea Generator section visibility

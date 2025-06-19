@@ -8,38 +8,38 @@ const topics = [
         text: "Python",
         img: "/images/python.png", // Assuming images are in public/images
         desc: "Let's discuss everything related to Python, from web development with Django and Flask to data analysis with Pandas and NumPy, and even machine learning",
-        slug:"Python-discussions"
+        slug:"Python"
     },
 
     {
         "text": "JavaScript",
         "img": "/images/javascript.png",
         "desc": "Explore web development, front-end frameworks like React and Angular, Node.js for backend, and dive deep into the ecosystem of JavaScript.",
-        slug:"JavaScript-discussions"
+        slug:"JavaScript"
     },
     {
         "text": "Java",
         "img": "/images/java.png",
         "desc": "Discuss enterprise applications, Android development, Spring Boot, and the intricacies of the Java Virtual Machine (JVM).",
-        slug:"Java-discussions"
+        slug:"Java"
     },
     {
         "text": "Data Science",
         "img": "/images/data_science.png",
         "desc": "Dive into machine learning algorithms, data analysis techniques, effective data visualization, and big data technologies like Hadoop and Spark.",
-        slug:"Data-Science-discussions"
+        slug:"Data-Science"
     },
     {
         "text": "Cloud Computing",
         "img": "/images/cloud.png",
         "desc": "Explore AWS, Azure, Google Cloud Platform, serverless architecture, infrastructure as code, and managing scalable cloud environments.",
-        slug:"Cloud-Computing-discussions"
+        slug:"Cloud-Computing"
     },
     {
         "text": "Cybersecurity",
         "img": "/images/cybersecurity.png",
         "desc": "Talk about network security, ethical hacking, data privacy regulations, digital forensics, and protecting against evolving cyber threats.",
-        "slug":"Cybersecurity-discussions"
+        "slug":"Cybersecurity"
     }
 ]
 

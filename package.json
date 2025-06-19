@@ -6,20 +6,26 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "type": "module"
   },
   "dependencies": {
+    "@clerk/express": "^1.7.0",
     "@clerk/nextjs": "^6.20.0",
     "@radix-ui/react-slot": "^1.2.3",
     "class-variance-authority": "^0.7.1",
+    "clerk": "^0.8.3",
     "clsx": "^2.1.1",
+    "convex": "^1.24.8",
     "lucide-react": "^0.511.0",
     "next": "15.3.2",
+    "nodemon": "^3.1.10",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "stream-chat": "^9.1.1",
-    "stream-chat-react": "^13.0.4",
-    "tailwind-merge": "^3.3.0"
+    "stream-chat": "^9.6.1",
+    "stream-chat-react": "^13.1.0",
+    "tailwind-merge": "^3.3.0",
+    "trpc": "^0.10.4"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

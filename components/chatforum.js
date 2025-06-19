@@ -2,38 +2,46 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { useCreateChatClient, Chat, Channel, ChannelHeader, MessageInput, MessageList, Thread, Window } from 'stream-chat-react';
-
+// import { useUser } from '@clerk/nextjs';
 import 'stream-chat-react/dist/css/v2/index.css';
 
-const apiKey = 'dz5f4d5kzrue';
-const userId = 'ancient-bread-3';
-const userName = 'ancient';
-const userToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiYW5jaWVudC1icmVhZC0zIiwiZXhwIjoxNzQ4MzQyOTEyfQ.gpSEG07ldbBFQcV3-_QMDkik9XbKeMHmjemO8-0GhAQ';
+// const apiKey = 's5hmee6x8y6c';
+//const userId = 'user_2xZzF3GQKALwFTqnAZ7ilEgK6xc';
+//const userName = 'Samar Pratap';
+// const userToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoidXNlcl8yeFp6RjNHUUtBTHdGVHFuQVo3aWxFZ0s2eGMifQ.ScErrJmx0yhe3SY5GZsdNUoHM7OiHthvKb7F9mL-Q14';
 
-const user = {
-  id: userId,
-  name: userName,
-  image: `https://getstream.io/random_png/?name=${userName}`,
-};
-
-const ChatForum = () => {
+const ChatForum = ({clerkUser,slug}) => {
+    const apiKey="s5hmee6x8y6c";
+    const userId=clerkUser.id;
+    const userName = clerkUser.name;
+    const userToken =clerkUser.token;
+    // const useUser=useUser();
+    const user = { 
+    id: userId,
+    name: userName,
+    image: `https://getstream.io/random_png/?name=${userName}`,
+   };
   const [channel, setChannel] = useState();
   const client = useCreateChatClient({
     apiKey,
     tokenOrProvider: userToken,
     userData: user,
   });
+  function capitalize(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
 
   useEffect(() => {
     if (!client) return;
 
-    const channel = client.channel('messaging', 'custom_channel_id', {
+    const channel = client.channel('messaging', slug , {
       image: 'https://getstream.io/random_png/?name=react',
-      name: 'Talk about React',
+      name: capitalize(slug),
       members: [userId],
     });
 
     setChannel(channel);
+    //channel.addMembers([userId])
   }, [client]);
 
   if (!client) return <div>Setting up client & connection...</div>;
