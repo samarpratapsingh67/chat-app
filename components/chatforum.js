@@ -84,7 +84,7 @@ const ChatForum = ({ clerkUser, slug }) => {
     if (channel && responseText.trim()) {
       try {
         await channel.sendMessage({
-          text: responseText, // Send only the response text without prefix
+          text: responseText,
           user: user,
         });
         console.log('AI response sent as message');
@@ -143,7 +143,24 @@ const ChatForum = ({ clerkUser, slug }) => {
     }
   };
 
-  // AI Responses Component
+  // Floating 3D Animation Component
+  const FloatingOrb = ({ delay = 0, color = '#667eea' }) => (
+    <div
+      style={{
+        position: 'absolute',
+        width: '20px',
+        height: '20px',
+        borderRadius: '50%',
+        background: `linear-gradient(45deg, ${color}, ${color}88)`,
+        boxShadow: `0 8px 32px ${color}44`,
+        animation: `float 6s ease-in-out infinite`,
+        animationDelay: `${delay}s`,
+        zIndex: 1,
+      }}
+    />
+  );
+
+  // AI Responses Component with 3D Effects
   const AIResponsesPanel = () => {
     if (!showAIResponses || Object.keys(aiResponses).length === 0) {
       return null;
@@ -151,155 +168,357 @@ const ChatForum = ({ clerkUser, slug }) => {
 
     return (
       <div style={{
-        backgroundColor: '#f8f9fa',
-        border: '1px solid #dee2e6',
-        borderRadius: '8px',
-        padding: '15px',
-        margin: '10px',
-        maxHeight: '400px',
-        overflowY: 'auto'
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #4facfe 100%)',
+        borderRadius: '20px',
+        padding: '2px',
+        margin: '15px',
+        position: 'relative',
+        overflow: 'hidden',
+        boxShadow: '0 20px 40px rgba(102, 126, 234, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2)',
+        animation: 'glow 4s ease-in-out infinite alternate'
       }}>
+        {/* Floating 3D Elements */}
+        <FloatingOrb delay={0} color="#667eea" />
+        <FloatingOrb delay={2} color="#f093fb" />
+        <FloatingOrb delay={4} color="#4facfe" />
+        
         <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginBottom: '15px'
+          backgroundColor: 'rgba(255, 255, 255, 0.95)',
+          borderRadius: '18px',
+          padding: '20px',
+          backdropFilter: 'blur(10px)',
+          position: 'relative',
+          zIndex: 2
         }}>
-          <h3 style={{ margin: 0, color: '#495057', fontSize: '16px' }}>
-            🤖 AI Response Suggestions
-          </h3>
-          <button
-            onClick={() => setShowAIResponses(false)}
-            style={{
-              background: 'none',
-              border: 'none',
-              fontSize: '18px',
-              cursor: 'pointer',
-              color: '#6c757d'
-            }}
-          >
-            ×
-          </button>
-        </div>
-
-        {Object.entries(aiResponses).map(([userIdKey, userInfo]) => {
-          if (userIdKey === 'error') {
-            return (
-              <div key="error" style={{
-                backgroundColor: '#f8d7da',
-                border: '1px solid #f5c6cb',
-                borderRadius: '4px',
-                padding: '10px',
-                marginBottom: '10px',
-                color: '#721c24'
-              }}>
-                <strong>Error:</strong> {userInfo.message}
-              </div>
-            );
-          }
-
-          return (
-            <div key={userIdKey} style={{
-              backgroundColor: 'white',
-              border: '1px solid #dee2e6',
-              borderRadius: '6px',
-              padding: '12px',
-              marginBottom: '15px'
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginBottom: '20px'
+          }}>
+            <h3 style={{
+              margin: 0,
+              background: 'linear-gradient(45deg, #667eea, #764ba2)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              fontSize: '20px',
+              fontWeight: '700',
+              textShadow: '0 2px 4px rgba(102, 126, 234, 0.3)'
             }}>
-              <h4 style={{
-                margin: '0 0 10px 0',
-                color: '#495057',
-                fontSize: '14px',
-                fontWeight: 'bold'
-              }}>
-                👤 {userInfo.userName}
-              </h4>
-              
-              {userInfo.responses && userInfo.responses.map((response, index) => (
-                <div key={index} style={{
-                  backgroundColor: '#f8f9fa',
-                  border: '1px solid #e9ecef',
-                  borderRadius: '4px',
-                  padding: '8px',
-                  marginBottom: '8px',
+              🤖 AI Magic Suggestions ✨
+            </h3>
+            <button
+              onClick={() => setShowAIResponses(false)}
+              style={{
+                background: 'linear-gradient(45deg, #ff6b6b, #ee5a24)',
+                border: 'none',
+                borderRadius: '50%',
+                width: '30px',
+                height: '30px',
+                color: 'white',
+                fontSize: '16px',
+                cursor: 'pointer',
+                boxShadow: '0 4px 15px rgba(255, 107, 107, 0.4)',
+                transform: 'perspective(100px) rotateX(0deg)',
+                transition: 'all 0.3s ease'
+              }}
+              onMouseOver={(e) => {
+                e.target.style.transform = 'perspective(100px) rotateX(10deg) translateY(-2px)';
+                e.target.style.boxShadow = '0 8px 25px rgba(255, 107, 107, 0.6)';
+              }}
+              onMouseOut={(e) => {
+                e.target.style.transform = 'perspective(100px) rotateX(0deg) translateY(0px)';
+                e.target.style.boxShadow = '0 4px 15px rgba(255, 107, 107, 0.4)';
+              }}
+            >
+              ×
+            </button>
+          </div>
+
+          {Object.entries(aiResponses).map(([userIdKey, userInfo], userIndex) => {
+            if (userIdKey === 'error') {
+              return (
+                <div key="error" style={{
+                  background: 'linear-gradient(135deg, #ff9a9e, #fecfef)',
+                  border: '2px solid rgba(245, 101, 101, 0.3)',
+                  borderRadius: '15px',
+                  padding: '15px',
+                  marginBottom: '15px',
+                  color: '#721c24',
+                  boxShadow: '0 8px 32px rgba(245, 101, 101, 0.2)',
+                  transform: 'perspective(1000px) rotateX(2deg)'
+                }}>
+                  <strong>🚨 Oops!</strong> {userInfo.message}
+                </div>
+              );
+            }
+
+            const userColors = [
+              { primary: '#667eea', secondary: '#764ba2' },
+              { primary: '#f093fb', secondary: '#f5576c' },
+              { primary: '#4facfe', secondary: '#00f2fe' },
+              { primary: '#43e97b', secondary: '#38f9d7' },
+              { primary: '#fa709a', secondary: '#fee140' }
+            ];
+            
+            const userColor = userColors[userIndex % userColors.length];
+
+            return (
+              <div key={userIdKey} style={{
+                background: `linear-gradient(135deg, ${userColor.primary}22, ${userColor.secondary}22)`,
+                border: `2px solid ${userColor.primary}44`,
+                borderRadius: '18px',
+                padding: '20px',
+                marginBottom: '20px',
+                position: 'relative',
+                overflow: 'hidden',
+                boxShadow: `0 12px 35px ${userColor.primary}33`,
+                transform: 'perspective(1000px) rotateX(1deg)',
+                transition: 'all 0.3s ease'
+              }}
+              onMouseOver={(e) => {
+                e.currentTarget.style.transform = 'perspective(1000px) rotateX(0deg) translateY(-3px)';
+                e.currentTarget.style.boxShadow = `0 20px 50px ${userColor.primary}44`;
+              }}
+              onMouseOut={(e) => {
+                e.currentTarget.style.transform = 'perspective(1000px) rotateX(1deg) translateY(0px)';
+                e.currentTarget.style.boxShadow = `0 12px 35px ${userColor.primary}33`;
+              }}
+              >
+                {/* 3D User Avatar Background */}
+                <div style={{
+                  position: 'absolute',
+                  top: '-10px',
+                  right: '-10px',
+                  width: '60px',
+                  height: '60px',
+                  borderRadius: '50%',
+                  background: `linear-gradient(45deg, ${userColor.primary}, ${userColor.secondary})`,
+                  opacity: 0.1,
+                  transform: 'perspective(100px) rotateY(20deg)'
+                }} />
+                
+                <h4 style={{
+                  margin: '0 0 15px 0',
+                  background: `linear-gradient(45deg, ${userColor.primary}, ${userColor.secondary})`,
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  fontSize: '18px',
+                  fontWeight: '600',
                   display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center'
+                  alignItems: 'center',
+                  gap: '8px'
                 }}>
                   <span style={{
-                    flex: 1,
-                    fontSize: '13px',
-                    color: '#495057',
-                    marginRight: '10px'
+                    fontSize: '20px',
+                    filter: `drop-shadow(2px 2px 4px ${userColor.primary}66)`
+                  }}>👤</span>
+                  {userInfo.userName}
+                </h4>
+                
+                {userInfo.responses && userInfo.responses.map((response, index) => (
+                  <div key={index} style={{
+                    background: 'rgba(255, 255, 255, 0.9)',
+                    borderRadius: '12px',
+                    padding: '15px',
+                    marginBottom: '12px',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    gap: '15px',
+                    boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
+                    border: `1px solid ${userColor.primary}33`,
+                    position: 'relative',
+                    overflow: 'hidden'
                   }}>
-                    {response}
-                  </span>
-                  <button
-                    onClick={() => sendAIResponse(response, userIdKey, userInfo.userName)}
-                    style={{
-                      backgroundColor: '#007bff',
-                      color: 'white',
-                      border: 'none',
-                      borderRadius: '4px',
-                      padding: '4px 8px',
-                      fontSize: '12px',
-                      cursor: 'pointer',
-                      whiteSpace: 'nowrap'
-                    }}
-                    onMouseOver={(e) => e.target.style.backgroundColor = '#0056b3'}
-                    onMouseOut={(e) => e.target.style.backgroundColor = '#007bff'}
-                  >
-                    Send
-                  </button>
-                </div>
-              ))}
-            </div>
-          );
-        })}
+                    {/* Animated gradient overlay */}
+                    <div style={{
+                      position: 'absolute',
+                      top: 0,
+                      left: '-100%',
+                      width: '100%',
+                      height: '100%',
+                      background: `linear-gradient(90deg, transparent, ${userColor.primary}22, transparent)`,
+                      animation: 'shimmer 3s infinite'
+                    }} />
+                    
+                    <span style={{
+                      flex: 1,
+                      fontSize: '14px',
+                      color: '#2c3e50',
+                      lineHeight: '1.5',
+                      position: 'relative',
+                      zIndex: 1
+                    }}>
+                      {response}
+                    </span>
+                    <button
+                      onClick={() => sendAIResponse(response, userIdKey, userInfo.userName)}
+                      style={{
+                        background: `linear-gradient(45deg, ${userColor.primary}, ${userColor.secondary})`,
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: '25px',
+                        padding: '8px 16px',
+                        fontSize: '12px',
+                        fontWeight: '600',
+                        cursor: 'pointer',
+                        whiteSpace: 'nowrap',
+                        boxShadow: `0 4px 15px ${userColor.primary}44`,
+                        transform: 'perspective(100px) rotateX(0deg)',
+                        transition: 'all 0.3s ease',
+                        position: 'relative',
+                        zIndex: 1
+                      }}
+                      onMouseOver={(e) => {
+                        e.target.style.transform = 'perspective(100px) rotateX(-5deg) translateY(-2px)';
+                        e.target.style.boxShadow = `0 8px 25px ${userColor.primary}66`;
+                      }}
+                      onMouseOut={(e) => {
+                        e.target.style.transform = 'perspective(100px) rotateX(0deg) translateY(0px)';
+                        e.target.style.boxShadow = `0 4px 15px ${userColor.primary}44`;
+                      }}
+                    >
+                      🚀 Send
+                    </button>
+                  </div>
+                ))}
+              </div>
+            );
+          })}
+        </div>
+
+        {/* CSS Animations */}
+        <style jsx>{`
+          @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+          }
+          @keyframes glow {
+            0% { box-shadow: 0 20px 40px rgba(102, 126, 234, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2); }
+            100% { box-shadow: 0 25px 50px rgba(102, 126, 234, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3); }
+          }
+          @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+          }
+        `}</style>
       </div>
     );
   };
 
   console.log("Channel created:", channel);
 
-  if (!client) return <div>Setting up client & connection...</div>;
+  if (!client) return (
+    <div style={{
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: '100vh',
+      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+      color: 'white',
+      fontSize: '18px',
+      fontWeight: '600'
+    }}>
+      <div style={{
+        background: 'rgba(255, 255, 255, 0.1)',
+        padding: '20px 40px',
+        borderRadius: '20px',
+        backdropFilter: 'blur(10px)',
+        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)'
+      }}>
+        🚀 Setting up client & connection...
+      </div>
+    </div>
+  );
 
   return (
-    <Chat client={client}>
-      <Channel channel={channel}>
-        <Window>
-          <ChannelHeader />
-          <MessageList />
-          <MessageInput />
-          
-          {/* AI Response Generation Button - Below Chat */}
-          <div style={{ padding: '10px', borderTop: '1px solid #dee2e6' }}>
-            <button
-              onClick={handleGetAIResponses}
-              disabled={isLoadingAI}
-              style={{
-                padding: '8px 12px',
-                backgroundColor: isLoadingAI ? '#6c757d' : '#28a745',
-                color: 'white',
-                border: 'none',
-                borderRadius: '4px',
-                cursor: isLoadingAI ? 'not-allowed' : 'pointer',
-                fontSize: '14px',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '5px'
-              }}
-            >
-              {isLoadingAI ? '🔄 Generating...' : '🤖 Get AI Suggestions'}
-            </button>
-          </div>
+    <div style={{
+      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #4facfe 100%)',
+      minHeight: '100vh',
+      padding: '10px'
+    }}>
+      <Chat client={client}>
+        <Channel channel={channel}>
+          <Window>
+            <ChannelHeader />
+            <MessageList />
+            <MessageInput />
+            
+            {/* AI Response Generation Button - Below Chat */}
+            <div style={{ 
+              padding: '15px', 
+              borderTop: '2px solid rgba(255, 255, 255, 0.2)',
+              background: 'linear-gradient(90deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05))'
+            }}>
+              <button
+                onClick={handleGetAIResponses}
+                disabled={isLoadingAI}
+                style={{
+                  background: isLoadingAI 
+                    ? 'linear-gradient(45deg, #95a5a6, #bdc3c7)' 
+                    : 'linear-gradient(45deg, #2ecc71, #27ae60, #16a085)',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '25px',
+                  padding: '12px 24px',
+                  fontSize: '16px',
+                  fontWeight: '600',
+                  cursor: isLoadingAI ? 'not-allowed' : 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  boxShadow: isLoadingAI 
+                    ? '0 6px 20px rgba(149, 165, 166, 0.3)' 
+                    : '0 8px 25px rgba(46, 204, 113, 0.4)',
+                  transform: 'perspective(100px) rotateX(0deg)',
+                  transition: 'all 0.3s ease',
+                  position: 'relative',
+                  overflow: 'hidden'
+                }}
+                onMouseOver={(e) => {
+                  if (!isLoadingAI) {
+                    e.target.style.transform = 'perspective(100px) rotateX(-3deg) translateY(-2px)';
+                    e.target.style.boxShadow = '0 12px 35px rgba(46, 204, 113, 0.6)';
+                  }
+                }}
+                onMouseOut={(e) => {
+                  if (!isLoadingAI) {
+                    e.target.style.transform = 'perspective(100px) rotateX(0deg) translateY(0px)';
+                    e.target.style.boxShadow = '0 8px 25px rgba(46, 204, 113, 0.4)';
+                  }
+                }}
+              >
+                {isLoadingAI ? (
+                  <>
+                    <span style={{ animation: 'spin 1s linear infinite' }}>🔄</span>
+                    Generating Magic...
+                  </>
+                ) : (
+                  <>
+                    <span>🤖</span>
+                    Get AI Suggestions
+                    <span>✨</span>
+                  </>
+                )}
+              </button>
+            </div>
 
-          {/* AI Responses Panel - Below Chat */}
-          <AIResponsesPanel />
-        </Window>
-        <Thread />
-      </Channel>
-    </Chat>
+            {/* AI Responses Panel - Below Chat */}
+            <AIResponsesPanel />
+          </Window>
+          <Thread />
+        </Channel>
+      </Chat>
+
+      {/* Global Animations */}
+      <style jsx global>{`
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+      `}</style>
+    </div>
   );
 };
 
