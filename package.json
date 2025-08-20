@@ -12,7 +12,9 @@
   "dependencies": {
     "@clerk/express": "^1.7.0",
     "@clerk/nextjs": "^6.20.0",
+    "@google/generative-ai": "^0.24.1",
     "@radix-ui/react-slot": "^1.2.3",
+    "ai": "^5.0.18",
     "class-variance-authority": "^0.7.1",
     "clerk": "^0.8.3",
     "clsx": "^2.1.1",
@@ -20,6 +22,7 @@
     "lucide-react": "^0.511.0",
     "next": "15.3.2",
     "nodemon": "^3.1.10",
+    "openai": "^5.13.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "stream-chat": "^9.6.1",
