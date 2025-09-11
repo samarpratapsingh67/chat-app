@@ -1,6 +1,6 @@
 "use client";
 import React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import {
   useCreateChatClient,
   Chat,
@@ -41,8 +41,8 @@ const ChatForum = ({ clerkUser, slug }) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
 
-  // Function to send data to API and get AI responses
-  const sendMessagesToAPI = async (messages, channelId) => {
+  // Use useCallback to memoize the function and prevent unnecessary recreations
+  const sendMessagesToAPI = useCallback(async (messages, channelId) => {
     try {
       setIsLoadingAI(true);
       const response = await fetch('/api/getAllMessages', {
@@ -77,7 +77,7 @@ const ChatForum = ({ clerkUser, slug }) => {
     } finally {
       setIsLoadingAI(false);
     }
-  };
+  }, [userId, slug]); // Include dependencies that the function uses
 
   // Function to send AI response as a message
   const sendAIResponse = async (responseText, originalUserId, originalUserName) => {
@@ -119,7 +119,7 @@ const ChatForum = ({ clerkUser, slug }) => {
     });
 
     setChannel(channel);
-  }, [client, slug, userId]);
+  }, [client, slug, userId, sendMessagesToAPI]); // Now include sendMessagesToAPI in dependencies
 
   // Function to manually trigger AI responses
   const handleGetAIResponses = async () => {

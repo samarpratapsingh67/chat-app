@@ -26,6 +26,7 @@ const Card = React.forwardRef(({ className, children, glassy = false, ...props }
     {children}
   </div>
 ));
+Card.displayName = "Card";
 
 // Advanced Particle System
 function ParticleSystem({ count = 50, className = "" }) {
@@ -599,7 +600,7 @@ function EnhancedFeaturesSection() {
             More Than Just Chat
           </motion.h2>
           <motion.p
-            className="text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed"
+            className="text-xl text-gray-400 mb-8 leading-relaxed max-w-3xl mx-auto"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
@@ -745,7 +746,7 @@ function EnhancedCTASection() {
             Ready to Spark?
           </h2>
           <p className="text-xl text-gray-400 mb-8 leading-relaxed max-w-2xl mx-auto">
-            Join thousands of users who've already transformed their communication experience. Start your journey today.
+            Join thousands of users who&apos;ve already transformed their communication experience. Start your journey today.
           </p>
 
           {/* Stats display */}
@@ -921,16 +922,14 @@ function EnhancedVisualShowcase() {
     </Card>
   );
 }
-
-// Main App Component
-const App = () => {
+const Page = () => {
   return (
     <div className="bg-gradient-to-b from-stone-950 via-emerald-950 to-stone-950 text-gray-200 font-sans antialiased overflow-x-hidden">
       <EnhancedHeroSection />
       <EnhancedVisualShowcase />
       <EnhancedFeaturesSection />
       <EnhancedCTASection />
-      
+
       {/* Enhanced Footer */}
       <motion.footer 
         className="py-16 px-4 border-t border-white/10 bg-stone-900/80 backdrop-blur-xl relative overflow-hidden"
@@ -994,4 +993,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default Page;
