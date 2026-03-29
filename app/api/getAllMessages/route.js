@@ -24,8 +24,9 @@ function formatMessagesForPrompt(messages) {
 export async function POST(request) {
   try {
     const body = await request.json();
+    console.log("BODY RECEIVED:", body);
     const { messageSets, channelId, userId, slug, timestamp } = body;
-
+    
     console.log('Received data:', {
       channelId,
       userId,
