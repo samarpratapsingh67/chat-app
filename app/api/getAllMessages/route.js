@@ -103,7 +103,7 @@ export async function POST(request) {
           let model;
           try {
             model = genAI.getGenerativeModel({ 
-              model: "gemini-1.5-flash"
+              model: "gemini-2.0-flash"
             });
           } catch (modelError) {
             console.error('Error creating model:', modelError);
@@ -123,7 +123,7 @@ export async function POST(request) {
             const userResponses = [];
             
             // Generate 3 different responses for this user
-            for (let i = 1; i <= 3; i++) {
+            for (let i = 1; i <= 1; i++) {
               try {
                 const prompt = `You are participating in a chat conversation. Below is the conversation history. Generate a natural, contextual reply specifically tailored for "${userName}" based on their participation in the conversation.
 
