@@ -94,7 +94,10 @@ const TopicCard = ({ topic }) => {
     cardRef.current.style.transition = 'transform 0.4s ease-in-out';
   };
   
-  const duration = Math.random() * 2 + 3;
+    const durationSeed = topic.slug
+        .split('')
+        .reduce((total, char) => total + char.charCodeAt(0), 0);
+    const duration = 3 + (durationSeed % 5) * 0.4;
 
   return (
     <motion.div

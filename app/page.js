@@ -10,6 +10,17 @@ import {
 // Utility function for className merging
 const cn = (...classes) => classes.filter(Boolean).join(' ');
 
+// Deterministic RNG to keep SSR/CSR markup consistent.
+const createSeededRandom = (seed) => {
+  let value = seed;
+  return () => {
+    value += 0x6d2b79f5;
+    let result = Math.imul(value ^ (value >>> 15), value | 1);
+    result ^= result + Math.imul(result ^ (result >>> 7), result | 61);
+    return ((result ^ (result >>> 14)) >>> 0) / 4294967296;
+  };
+};
+
 // Enhanced Card Components with glassmorphism
 const Card = React.forwardRef(({ className, children, glassy = false, ...props }, ref) => (
   <div
@@ -30,18 +41,25 @@ Card.displayName = "Card";
 
 // Advanced Particle System
 function ParticleSystem({ count = 50, className = "" }) {
-  const particles = useMemo(() => 
-    Array.from({ length: count }, (_, i) => ({
-      id: i,
-      x: Math.random() * 100,
-      y: Math.random() * 100,
-      size: Math.random() * 4 + 1,
-      speedX: (Math.random() - 0.5) * 0.5,
-      speedY: (Math.random() - 0.5) * 0.5,
-      opacity: Math.random() * 0.6 + 0.2,
-      color: ['emerald', 'sage', 'forest', 'amber', 'teal'][Math.floor(Math.random() * 5)],
-    })), [count]
-  );
+  const particles = useMemo(() => {
+    const colors = ['emerald', 'sage', 'forest', 'amber', 'teal'];
+
+    return Array.from({ length: count }, (_, i) => {
+      const random = createSeededRandom(i + 1);
+
+      return {
+        id: i,
+        x: random() * 100,
+        y: random() * 100,
+        size: random() * 4 + 1,
+        speedX: (random() - 0.5) * 0.5,
+        speedY: (random() - 0.5) * 0.5,
+        opacity: random() * 0.6 + 0.2,
+        color: colors[Math.floor(random() * colors.length)],
+        duration: random() * 20 + 10,
+      };
+    });
+  }, [count]);
 
   const getParticleColor = (color) => {
     const colorMap = {
@@ -73,7 +91,7 @@ function ParticleSystem({ count = 50, className = "" }) {
             scale: [1, 1.5, 1],
           }}
           transition={{
-            duration: Math.random() * 20 + 10,
+            duration: particle.duration,
             repeat: Infinity,
             ease: "linear"
           }}
