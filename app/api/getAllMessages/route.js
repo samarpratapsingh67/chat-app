@@ -6,6 +6,12 @@ let globalProcessedMessages = [];
 
 // Initialize the Gemini client with your API key
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+const DEFAULT_GEMINI_MODELS = [
+  'gemini-2.5-flash',
+  'gemini-2.5-flash-lite',
+  'gemini-2.5-pro',
+];
+let cachedModelName;
 
 // Helper function to format messages into a single prompt string
 function formatMessagesForPrompt(messages) {
@@ -19,6 +25,59 @@ function formatMessagesForPrompt(messages) {
     .filter(message => message.text && message.text.trim() !== '') // Filter out empty messages
     .map(message => `${message.user?.name || 'Unknown User'}: ${message.text}`)
     .join('\n');
+}
+
+function getModelCandidates() {
+  const envModel = process.env.GEMINI_MODEL?.trim();
+  const candidates = [];
+
+  if (envModel) {
+    candidates.push(envModel);
+  }
+
+  for (const modelName of DEFAULT_GEMINI_MODELS) {
+    if (!candidates.includes(modelName)) {
+      candidates.push(modelName);
+    }
+  }
+
+  return candidates;
+}
+
+function isModelNotFound(error) {
+  const message = error?.message || '';
+  return error?.status === 404 || /not found/i.test(message);
+}
+
+async function generateContentWithFallback(requestPayload) {
+  const candidates = cachedModelName ? [cachedModelName] : getModelCandidates();
+  let lastError;
+
+  for (const modelName of candidates) {
+    try {
+      if (!cachedModelName) {
+        console.log('Trying Gemini model:', modelName);
+      }
+
+      const model = genAI.getGenerativeModel({
+        model: modelName,
+      });
+      const result = await model.generateContent(requestPayload);
+
+      cachedModelName = modelName;
+      console.log('Using Gemini model:', modelName);
+      return result;
+    } catch (error) {
+      lastError = error;
+      if (isModelNotFound(error)) {
+        console.warn(`Gemini model not found: ${modelName}`);
+        continue;
+      }
+      throw error;
+    }
+  }
+
+  throw lastError || new Error('No supported Gemini model found');
 }
 
 export async function POST(request) {
@@ -99,17 +158,6 @@ export async function POST(request) {
           const uniqueUsers = [...new Set(processedMessages.map(msg => msg.user.id))];
           console.log('Unique users found:', uniqueUsers);
           
-          // Get the generative model
-          let model;
-          try {
-            model = genAI.getGenerativeModel({ 
-              model: "gemini-2.5-flash"
-            });
-          } catch (modelError) {
-            console.error('Error creating model:', modelError);
-            throw new Error('Failed to initialize AI model');
-          }
-
           const chatHistory = formatMessagesForPrompt(processedMessages);
           console.log('Chat history formatted:', chatHistory);
           
@@ -146,13 +194,13 @@ Reply Option ${i}:`;
                 
                 console.log(`--- SENDING REQUEST ${i} FOR ${userName} ---`);
                 
-                const result = await model.generateContent({
+                const result = await generateContentWithFallback({
                   contents: [{
                     role: 'user',
                     parts: [{
-                      text: prompt
-                    }]
-                  }]
+                      text: prompt,
+                    }],
+                  }],
                 });
 
                 const response = await result.response;
